@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia de las TICs - Línea del Tiempo Colaborativa</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --admin-color: #7c3aed;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --border: #cbd5e1;
+            --line-color: #3b82f6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            padding-bottom: 60px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #94a3b8;
+            font-size: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .admin-bar {
+            background: #1e293b;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+            font-size: 0.9rem;
+        }
+
+        .admin-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge-admin {
+            background: var(--admin-color);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .btn-admin-login {
+            background: var(--admin-color);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-admin-login:hover {
+            background: #6d28d9;
+        }
+
+        .container {
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 36px;
+        }
+
+        @media (max-width: 960px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 20px;
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f1f5f9;
+            color: #1e293b;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #334155;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-cancel {
+            background-color: #64748b;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .btn-edit {
+            background-color: #f59e0b;
+            width: auto;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            margin-right: 6px;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn-danger {
+            background-color: #ef4444;
+            width: auto;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 10px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 20px;
+            width: 4px;
+            background: var(--line-color);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 32px;
+            padding-left: 54px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 11px;
+            top: 18px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 4px solid var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+            z-index: 1;
+        }
+
+        .timeline-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.04);
+        }
+
+        .timeline-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #e2e8f0;
+        }
+
+        .timeline-content {
+            padding: 20px;
+        }
+
+        .timeline-date {
+            display: inline-block;
+            background-color: #eff6ff;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
+
+        .timeline-h3 {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+            color: #0f172a;
+        }
+
+        .timeline-desc {
+            font-size: 0.95rem;
+            color: #475569;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .author-box {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .admin-only-controls {
+            display: none;
+            gap: 6px;
+        }
+
+        .is-admin .admin-only-controls {
+            display: flex;
+        }
+
+        .verified-tag {
+            background: #dcfce7;
+            color: #15803d;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="admin-bar">
+    <div class="admin-status">
+        <span id="roleLabel">Modo Comunidad (Vista Pública)</span>
+        <span id="adminBadge" class="badge-admin" style="display:none;">Administrador Principal</span>
+    </div>
+    <button id="loginBtn" class="btn-admin-login" onclick="toggleAdmin()">Acceso Administrador</button>
+</div>
+
+<header>
+    <h1>Historia de las Tecnologías de la Información</h1>
+    <p>Plataforma colaborativa para explorar y publicar hitos históricos de las TICs.</p>
+</header>
+
+<div class="container" id="mainContainer">
+    <aside>
+        <div class="card">
+            <h2 id="formTitle">Aportar un Hito a la Línea</h2>
+            <form id="timelineForm">
+                <input type="hidden" id="editIndex" value="-1">
+                
+                <div class="form-group">
+                    <label for="userName">Tu Nombre / Institución *</label>
+                    <input type="text" id="userName" required placeholder="Ej: Dr. Carlos Mendoza">
+                </div>
+                
+                <div class="form-group">
+                    <label for="userEmail">Correo de Contacto *</label>
+                    <input type="email" id="userEmail" required placeholder="carlos@ejemplo.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="userContact">Teléfono / Redes</label>
+                    <input type="text" id="userContact" placeholder="+54 9 11 1234-5678">
+                </div>
+                
+                <hr style="border:0; border-top:1px solid #e2e8f0; margin:14px 0;">
+                
+                <div class="form-group">
+                    <label for="eventTitle">Título del Hito Tecnológico *</label>
+                    <input type="text" id="eventTitle" required placeholder="Ej: Invención del Transistor">
+                </div>
+                
+                <div class="form-group">
+                    <label for="eventDate">Fecha / Año *</label>
+                    <input type="date" id="eventDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="eventImageUrl">URL de Imagen ilustrativa</label>
+                    <input type="url" id="eventImageUrl" placeholder="https://...">
+                </div>
+                
+                <div class="form-group">
+                    <label for="eventDesc">Descripción e Impacto *</label>
+                    <textarea id="eventDesc" rows="4" required placeholder="Explica por qué este avance cambió la historia de la computación..."></textarea>
+                </div>
+                
+                <button type="submit" class="btn" id="submitBtn">Publicar Aporte</button>
+                <button type="button" class="btn btn-cancel" id="cancelBtn" onclick="resetForm()">Cancelar</button>
+            </form>
+        </div>
+    </aside>
+
+    <main>
+        <h2 style="margin-bottom:20px;">Línea Cronológica de la Tecnología</h2>
+        <div id="timelineContainer" class="timeline"></div>
+    </main>
+</div>
+
+<script>
+    const historyData = [
+        {
+            name: "Comité Histórico",
+            email: "admin@tics.org",
+            contact: "Oficial",
+            title: "Diseño de la Máquina Analítica (Charles Babbage y Ada Lovelace)",
+            date: "1837-01-01",
+            desc: "Primer diseño de un computador mecánico general. Ada Lovelace escribe el primer algoritmo pensado para ser procesado por una máquina.",
+            image: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=600&q=80"
+        },
+        {
+            name: "Comité Histórico",
+            email: "admin@tics.org",
+            contact: "Oficial",
+            title: "Invención del Transistor en Laboratorios Bell",
+            date: "1947-12-16",
+            desc: "John Bardeen, Walter Brattain y William Shockley crean el transistor, reemplazando los tubos al vacío y permitiendo la miniaturización electrónica.",
+            image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80"
+        },
+        {
+            name: "Comité Histórico",
+            email: "admin@tics.org",
+            contact: "Oficial",
+            title: "Primera Conexión de ARPANET",
+            date: "1969-10-29",
+            desc: "Se envía el primer mensaje entre dos computadoras distantes (UCLA y Stanford), sentando las bases de lo que hoy es Internet.",
+            image: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=600&q=80"
+        },
+        {
+            name: "Comité Histórico",
+            email: "admin@tics.org",
+            contact: "Oficial",
+            title: "Lanzamiento del Microprocesador Intel 4004",
+            date: "1971-11-15",
+            desc: "El primer microprocesador comercial en un solo chip de silicio. Dio origen a la era de la computación personal.",
+            image: "https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=600&q=80"
+        },
+        {
+            name: "Comité Histórico",
+            email: "admin@tics.org",
+            contact: "Oficial",
+            title: "Nacimiento de la World Wide Web (CERN)",
+            date: "1989-03-12",
+            desc: "Tim Berners-Lee propone el sistema de hipertexto que permitió la creación de páginas web y la democratización global del acceso a información.",
+            image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&q=80"
+        },
+        {
+            name: "Comité Histórico",
+            email: "admin@tics.org",
+            contact: "Oficial",
+            title: "Revolución Móvil: Computación en el Bolsillo",
+            date: "2007-06-29",
+            desc: "Lanzamiento de los smartphones modernos con pantalla táctil e internet permanente, transformando la comunicación humana.",
+            image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&q=80"
+        },
+        {
+            name: "Comité Histórico",
+            email: "admin@tics.org",
+            contact: "Oficial",
+            title: "Era de la IA Generativa y Modelos Masivos",
+            date: "2022-11-30",
+            desc: "Despliegue global de sistemas avanzados de Inteligencia Artificial capaces de razonar, programar y generar contenido multimodal en tiempo real.",
+            image: "https://images.unsplash.com/photo-1677442136019-21780efad99a?w=600&q=80"
+        }
+    ];
+
+    let posts = JSON.parse(localStorage.getItem('history_tics_posts')) || historyData;
+    let isAdmin = false;
+    const ADMIN_PASSWORD = "admin123";
+
+    const form = document.getElementById('timelineForm');
+    const container = document.getElementById('timelineContainer');
+
+    document.addEventListener('DOMContentLoaded', renderTimeline);
+
+    function toggleAdmin() {
+        if (!isAdmin) {
+            const pass = prompt("Ingresa la contraseña de Administrador:");
+            if (pass === ADMIN_PASSWORD) {
+                isAdmin = true;
+                document.body.classList.add('is-admin');
+                document.getElementById('adminBadge').style.display = 'inline-block';
+                document.getElementById('roleLabel').innerText = "Sesión de Administrador Activa";
+                document.getElementById('loginBtn').innerText = "Cerrar Modo Admin";
+                alert("¡Acceso concedido! Ahora puedes editar o eliminar cualquier publicación.");
+                renderTimeline();
+            } else if (pass !== null) {
+                alert("Contraseña incorrecta.");
+            }
+        } else {
+            isAdmin = false;
+            document.body.classList.remove('is-admin');
+            document.getElementById('adminBadge').style.display = 'none';
+            document.getElementById('roleLabel').innerText = "Modo Comunidad (Vista Pública)";
+            document.getElementById('loginBtn').innerText = "Acceso Administrador";
+            renderTimeline();
+        }
+    }
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const editIndex = parseInt(document.getElementById('editIndex').value);
+        const imageUrl = document.getElementById('eventImageUrl').value.trim() || 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80';
+        
+        const newPost = {
+            name: document.getElementById('userName').value,
+            email: document.getElementById('userEmail').value,
+            contact: document.getElementById('userContact').value,
+            title: document.getElementById('eventTitle').value,
+            date: document.getElementById('eventDate').value,
+            desc: document.getElementById('eventDesc').value,
+            image: imageUrl
+        };
+
+        if (editIndex === -1) {
+            posts.push(newPost);
+        } else {
+            posts[editIndex] = newPost;
+        }
+
+        saveAndRefresh();
+        resetForm();
+    });
+
+    function renderTimeline() {
+        container.innerHTML = '';
+        posts.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        posts.forEach((post, index) => {
+            const item = document.createElement('div');
+            item.className = 'timeline-item';
+            
+            item.innerHTML = `
+                <div class="timeline-card">
+                    <img src="${post.image}" class="timeline-img" alt="${escapeHTML(post.title)}" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80'">
+                    <div class="timeline-content">
+                        <span class="timeline-date">📅 ${formatDate(post.date)}</span>
+                        <h3 class="timeline-h3">${escapeHTML(post.title)}</h3>
+                        <p class="timeline-desc">${escapeHTML(post.desc)}</p>
+                        
+                        <div class="author-box">
+                            <strong>Aportado por: ${escapeHTML(post.name)}</strong>
+                            <div>✉️ <a href="mailto:${escapeHTML(post.email)}">${escapeHTML(post.email)}</a></div>
+                            ${post.contact ? `<div>📞 ${escapeHTML(post.contact)}</div>` : ''}
+                        </div>
+
+                        <div class="card-actions">
+                            <span class="verified-tag">Verificado</span>
+                            <div class="admin-only-controls">
+                                <button class="btn-edit" onclick="editPost(${index})">Editar (Admin)</button>
+                                <button class="btn-danger" onclick="deletePost(${index})">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.appendChild(item);
+        });
+    }
+
+    function editPost(index) {
+        const post = posts[index];
+        document.getElementById('userName').value = post.name;
+        document.getElementById('userEmail').value = post.email;
+        document.getElementById('userContact').value = post.contact || '';
+        document.getElementById('eventTitle').value = post.title;
+        document.getElementById('eventDate').value = post.date;
+        document.getElementById('eventDesc').value = post.desc;
+        document.getElementById('eventImageUrl').value = post.image;
+        
+        document.getElementById('editIndex').value = index;
+        document.getElementById('formTitle').innerText = 'Edición Exclusiva de Administrador';
+        document.getElementById('submitBtn').innerText = 'Guardar Cambios';
+        document.getElementById('cancelBtn').style.display = 'block';
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function deletePost(index) {
+        if (confirm('¿Confirmas que deseas eliminar este registro como administrador?')) {
+            posts.splice(index, 1);
+            saveAndRefresh();
+        }
+    }
+
+    function resetForm() {
+        form.reset();
+        document.getElementById('editIndex').value = -1;
+        document.getElementById('formTitle').innerText = 'Aportar un Hito a la Línea';
+        document.getElementById('submitBtn').innerText = 'Publicar Aporte';
+        document.getElementById('cancelBtn').style.display = 'none';
+    }
+
+    function saveAndRefresh() {
+        localStorage.setItem('history_tics_posts', JSON.stringify(posts));
+        renderTimeline();
+    }
+
+    function formatDate(dateString) {
+        if (!dateString) return 'Sin fecha';
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const date = new Date(dateString + 'T00:00:00');
+        return date.toLocaleDateString('es-ES', options);
+    }
+
+    function escapeHTML(str) {
+        return str.replace(/[&<>'"]/g, 
+            tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag] || tag)
+        );
+    }
+</script>
+</body>
+</html>
